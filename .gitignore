@@ -9,18 +9,22 @@ venv/
 .venv/
 ENV/
 
-# Data and ChromaDB
+# Generated Data and Databases
 data/chroma/
 *.db
 *.sqlite3
+data/students/*.db
+data/students/*.sqlite3
 
-# Environment & Secrets
+# Environment Variables & Secrets
 .env
+*.env.local
 
 # Testing & Reports
 .pytest_cache/
 reports/*.html
 reports/*.json
+reports/*.jsonl
 
 # IDE & OS
 .vscode/

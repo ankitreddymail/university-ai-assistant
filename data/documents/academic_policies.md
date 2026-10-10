@@ -1,15 +1,11 @@
-# University Academic Policies and Degree Requirements
+# [SYNTHETIC DEMO TEMPLATE - NOT AN OFFICIAL UNIVERSITY DOCUMENT]
 
-## Graduation Requirements
-To qualify for undergraduate degree conferral:
-- **Minimum Credits**: A student must complete at least 120 credit hours.
-- **Minimum Cumulative GPA**: A student must maintain an overall cumulative GPA of 2.00 or higher.
-- **Administrative Holds**: All financial, library, and disciplinary holds must be resolved prior to graduation clearance.
+> **IMPORTANT DISCLAIMER:**
+> This document contains synthetic demonstration notes prepared strictly for testing the pipeline architecture and prototype workflows.
+> It is **NOT** an official university policy document.
+> Official university policy documents, academic regulations, and placement guidelines will be provided separately as official PDFs.
 
-## Dean's Honor List
-- Students achieving a term or cumulative GPA of 3.50 or higher are eligible for the Dean's Honor List.
-- Any student with an active disciplinary hold is disqualified from academic honors.
-
-## Course Overload Policy
-- The standard course load is 15-18 credits per semester.
-- Enrollment in 19 or more credits requires prior approval from the Academic Dean and a minimum GPA of 3.20.
+## Demonstration Scope
+- Sample Attendance Baseline: Attendance tracking demonstration notes.
+- Sample Examination Guidelines: Course completion and backlog rules testing.
+- Sample Placement Criteria: CGPA and active backlog eligibility criteria testing.

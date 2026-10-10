@@ -1,39 +1,40 @@
 # AI-Powered University Student Services Assistant
 
-A practical, transparent, and interview-ready AI Assistant designed for university students, submitted for the HCLTech AI Engineer Hackathon.
+A practical, transparent, and interview-ready AI Assistant designed for university students, developed for the HCLTech AI Engineer Hackathon.
 
 ## Architecture & Project Structure
 
-The project emphasizes readable code, explicit control flow, deterministic rule evaluation for student academic standing, and modular separation of concerns.
+The project emphasizes readable code, explicit control flow, deterministic rule evaluation backed by SQLite, and modular separation of concerns.
 
 ```text
 university-ai-assistant/
 ├── app/
-│   ├── main.py                 # FastAPI application, CORS setup, and HTTP routes
-│   ├── ui.py                   # Streamlit user interface for students and advisors
-│   ├── schemas.py              # Pydantic v2 data models for API and data validation
+│   ├── main.py                 # FastAPI application, CORS setup, and GET /health
+│   ├── ui.py                   # Streamlit user interface (prototype)
+│   ├── schemas.py              # Pydantic v2 data models aligned with Annex C
 │   ├── config.py               # Pydantic BaseSettings loading environment configurations
 │   ├── rag/
-│   │   ├── ingestion.py        # Markdown policy loader, chunker, and ChromaDB vectorizer
-│   │   └── retrieval.py        # Semantic search against indexed university policies
+│   │   ├── ingestion.py        # Policy document loader (RAG ingestion skeleton)
+│   │   └── retrieval.py        # Semantic retrieval skeleton
 │   ├── tools/
-│   │   ├── student_data.py     # SQLite queries for student records, credits, and holds
-│   │   ├── eligibility.py      # Deterministic academic checks (graduation, Dean's List)
-│   │   └── rule_resolution.py  # Maps student inquiry types to business rule evaluators
+│   │   ├── student_data.py     # SQLite queries for students, courses, attendance, results, rules
+│   │   ├── eligibility.py      # Deterministic checks (attendance, exam, supp, placement)
+│   │   └── rule_resolution.py  # Routes service requests to rule evaluation functions
 │   ├── workflow/
-│   │   └── graph.py            # LangGraph state machine orchestrating end-to-end reasoning
+│   │   └── graph.py            # LangGraph state machine skeleton
 │   └── audit.py                # Transparency logger capturing queries, rules, and sources
 ├── scripts/
-│   ├── generate_students.py    # Generates synthetic student scenarios into JSON
-│   ├── validate_students.py    # Validates data integrity of student records
-│   ├── load_students.py        # Seeds SQLite database from JSON dataset
-│   └── evaluate.py             # Evaluation benchmark for retrieval and rule accuracy
+│   ├── generate_students.py    # Generates 35 synthetic students & Annex C CSV datasets
+│   ├── validate_students.py    # Validates data integrity, CGPA scale, and judge ID reservations
+│   ├── load_students.py        # Initializes 5 SQLite tables and imports CSV datasets
+│   └── evaluate.py             # Benchmark evaluation skeleton
 ├── data/
-│   ├── documents/              # University policy markdown files
-│   ├── students/               # Student JSON files and SQLite database
-│   └── chroma/                 # Persistent ChromaDB vector storage
+│   ├── documents/              # University policy documents (synthetic demo template)
+│   ├── students/               # Annex C CSV datasets and SQLite database
+│   └── chroma/                 # Persistent ChromaDB vector storage (pending ingestion)
 ├── tests/
-│   └── test_health.py          # Pytest unit tests for API endpoints
+│   ├── test_health.py          # Pytest unit tests for FastAPI /health endpoint
+│   └── test_eligibility.py     # Pytest unit tests for rule registry and eligibility checks
 ├── reports/                    # Audit logs and evaluation benchmark outputs
 ├── .env.example                # Example environment variables template
 ├── .gitignore                  # Git ignore rules for DBs, cache, and secrets
@@ -48,23 +49,23 @@ university-ai-assistant/
 ## Windows PowerShell Setup Instructions
 
 ### 1. Prerequisites
-- Python 3.11 installed (or managed via `uv`)
+- Windows 10/11
 - PowerShell terminal
+- Python 3.11 (installed in `.venv` via `uv`)
 
-### 2. Set Up Virtual Environment & Dependencies
+### 2. Activate Virtual Environment
 
-From the project root in Windows PowerShell:
+The project uses a Python 3.11 virtual environment in `.venv`:
 
 ```powershell
-# If using uv (recommended for ultra-fast setup):
+.venv\Scripts\activate
+```
+
+*(If you ever need to recreate it from scratch using `uv`:)*
+```powershell
 uv venv .venv --python 3.11
 .venv\Scripts\activate
 uv pip install -r requirements.txt
-
-# Or using standard python:
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
 ```
 
 ### 3. Configure Environment Variables
@@ -73,58 +74,61 @@ pip install -r requirements.txt
 Copy-Item .env.example .env
 ```
 
-Review `.env` to verify:
-- `MODEL_NAME=qwen2.5:7b`
-- `OLLAMA_BASE_URL=http://localhost:11434`
+Key configuration parameters in `.env`:
 - `SQLITE_DB_PATH=data/students/university.db`
 - `CHROMA_PERSIST_DIR=data/chroma`
+- `DOCUMENTS_DIR=data/documents`
 - `API_PORT=8000`
 
-### 4. Seed Mock Student Data
+### 4. Generate, Validate, and Load Student Data (Annex C)
+
+The student data follows the Annex C schema with 5 SQLite tables: `students`, `courses`, `attendance`, `results`, and `rule_registry`.
 
 ```powershell
-# 1. Generate test students
-python scripts/generate_students.py
+# Step 1: Generate synthetic CSV files (35 students, 2 programmes, 2 batches, 6 courses)
+.venv\Scripts\python.exe scripts/generate_students.py
 
-# 2. Validate student integrity
-python scripts/validate_students.py
+# Step 2: Validate data integrity, 0-10 CGPA scale, and judge reservations
+.venv\Scripts\python.exe scripts/validate_students.py
 
-# 3. Load into SQLite database
-python scripts/load_students.py
+# Step 3: Create SQLite schema and load CSVs into data/students/university.db
+.venv\Scripts\python.exe scripts/load_students.py
 ```
 
-### 5. Run the Backend API
+### 5. Run Unit Tests
+
+Verify the health check and deterministic rule evaluation:
 
 ```powershell
-python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+.venv\Scripts\pytest.exe
 ```
 
-Visit the interactive API docs at: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)  
-Health Check endpoint: [http://127.0.0.1:8000/health](http://127.0.0.1:8000/health)
+### 6. Run the Backend API
 
-### 6. Run the Streamlit UI
+```powershell
+.venv\Scripts\uvicorn.exe app.main:app --host 127.0.0.1 --port 8000 --reload
+```
+
+- API Docs: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+- Health Check: [http://127.0.0.1:8000/health](http://127.0.0.1:8000/health)
+
+### 7. Run Streamlit UI (Prototype)
 
 In a separate terminal:
 
 ```powershell
-.venv\Scripts\Activate.ps1
+.venv\Scripts\activate
 streamlit run app/ui.py
-```
-
-The web dashboard will be available at: [http://localhost:8501](http://localhost:8501)
-
-### 7. Run Unit Tests
-
-```powershell
-pytest
 ```
 
 ---
 
-## Docker Deployment (Optional)
+## Current Implementation Status
 
-To start both the API and Streamlit UI in containers:
-
-```powershell
-docker compose up --build
-```
+- [x] **FastAPI & Health Endpoint**: Implemented and verified via unit tests and live HTTP calls.
+- [x] **Annex C Student Data**: 35 synthetic students, 2 programmes, 2 batches, 6 courses generated into CSVs and loaded into SQLite.
+- [x] **Rule-Based Eligibility Engine**: Built on `rule_registry` table with zero hardcoded thresholds.
+- [ ] **Document Ingestion (RAG Stage 2)**: Scheduled for next phase.
+- [ ] **LangGraph Workflow Orchestration**: Skeletons in place; node execution scheduled for workflow phase.
+- [ ] **Ollama LLM Integration**: Scheduled for workflow integration.
+- [ ] **Docker Container Verification**: Dockerfile and compose defined; full container testing pending.
