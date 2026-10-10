@@ -104,3 +104,38 @@ class EligibilityCheckResponse(BaseModel):
     rule_id: Optional[str] = None
     source_doc_id: Optional[str] = None
     source_section: Optional[str] = None
+
+
+class IngestedDocSummary(BaseModel):
+    """Summary of a single ingested document."""
+    doc_id: str
+    title: str
+    pages: int
+    chunks: int
+    synthetic: bool
+
+
+class IngestResponse(BaseModel):
+    """Response schema for POST /ingest endpoint."""
+    status: str = "success"
+    documents_processed: int
+    total_chunks_indexed: int
+    documents: List[IngestedDocSummary] = Field(default_factory=list)
+
+
+class SourceItem(BaseModel):
+    """Metadata item for an ingested document source."""
+    doc_id: str
+    title: str
+    total_pages: int
+    total_chunks: int
+    doc_version_date: str
+    effective_date: str
+    source_url: str
+    synthetic: bool
+
+
+class SourcesResponse(BaseModel):
+    """Response schema for GET /sources endpoint."""
+    total_documents: int
+    sources: List[SourceItem] = Field(default_factory=list)

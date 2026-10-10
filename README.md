@@ -95,15 +95,27 @@ The student data follows the Annex C schema with 5 SQLite tables: `students`, `c
 .venv\Scripts\python.exe scripts/load_students.py
 ```
 
-### 5. Run Unit Tests
+### 5. Ingest Documents into ChromaDB (RAG)
 
-Verify the health check and deterministic rule evaluation:
+Ingest official PDFs and synthetic Markdown documents page-by-page into persistent ChromaDB:
+
+```powershell
+# Ingest all documents from data/documents/
+.venv\Scripts\python.exe scripts/ingest_documents.py
+
+# Inspect ingested sources and metadata
+.venv\Scripts\python.exe scripts/inspect_sources.py
+```
+
+### 6. Run Unit Tests
+
+Verify the health check, Annex C schema, rule eligibility, and RAG ingestion/retrieval:
 
 ```powershell
 .venv\Scripts\pytest.exe
 ```
 
-### 6. Run the Backend API
+### 7. Run the Backend API
 
 ```powershell
 .venv\Scripts\uvicorn.exe app.main:app --host 127.0.0.1 --port 8000 --reload
@@ -111,8 +123,10 @@ Verify the health check and deterministic rule evaluation:
 
 - API Docs: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 - Health Check: [http://127.0.0.1:8000/health](http://127.0.0.1:8000/health)
+- Ingest Documents: `POST http://127.0.0.1:8000/ingest`
+- List Sources: `GET http://127.0.0.1:8000/sources`
 
-### 7. Run Streamlit UI (Prototype)
+### 8. Run Streamlit UI (Prototype)
 
 In a separate terminal:
 
@@ -128,7 +142,7 @@ streamlit run app/ui.py
 - [x] **FastAPI & Health Endpoint**: Implemented and verified via unit tests and live HTTP calls.
 - [x] **Annex C Student Data**: 35 synthetic students, 2 programmes, 2 batches, 6 courses generated into CSVs and loaded into SQLite.
 - [x] **Rule-Based Eligibility Engine**: Built on `rule_registry` table with zero hardcoded thresholds.
-- [ ] **Document Ingestion (RAG Stage 2)**: Scheduled for next phase.
+- [x] **Document Ingestion (RAG Stage 2)**: Page-by-page PDF & Markdown extraction, persistent ChromaDB, `POST /ingest`, and `GET /sources`.
 - [ ] **LangGraph Workflow Orchestration**: Skeletons in place; node execution scheduled for workflow phase.
 - [ ] **Ollama LLM Integration**: Scheduled for workflow integration.
 - [ ] **Docker Container Verification**: Dockerfile and compose defined; full container testing pending.
