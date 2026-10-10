@@ -162,3 +162,25 @@ def get_rule_by_id(rule_id: str, db_path: str) -> Optional[Dict[str, Any]]:
         return dict(row) if row else None
     finally:
         conn.close()
+
+
+def get_all_rules(db_path: str) -> List[Dict[str, Any]]:
+    """Retrieve all business rules from rule_registry."""
+    if not Path(db_path).exists():
+        return []
+
+    conn = get_db_connection(db_path)
+    try:
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            SELECT rule_id, description, parameter, operator, value,
+                   scope_programmes, scope_batches, effective_from,
+                   effective_to, source_doc_id, source_section
+            FROM rule_registry
+            ORDER BY rule_id ASC
+            """
+        )
+        return [dict(row) for row in cursor.fetchall()]
+    finally:
+        conn.close()

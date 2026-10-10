@@ -90,9 +90,9 @@ class QueryResponse(BaseModel):
 
 class EligibilityCheckRequest(BaseModel):
     """Request schema for evaluating student eligibility for a specific service."""
-    student_id: str
-    service_type: str  # e.g., 'attendance', 'exam_result', 'supplementary_exam', 'placement'
+    service_type: str = Field(..., description="Eligibility service type: 'attendance', 'exam_result', 'supplementary_exam', 'placement'")
     course_code: Optional[str] = Field(default=None, description="Optional course code for course-specific checks")
+    student_id: Optional[str] = Field(default=None, description="Optional target student ID in body. If provided, must match authenticated X-Student-Id header.")
 
 
 class EligibilityCheckResponse(BaseModel):
