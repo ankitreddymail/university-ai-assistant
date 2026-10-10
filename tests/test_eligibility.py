@@ -1,4 +1,4 @@
-"""Tests for deterministic eligibility checks and rule registry lookups."""
+"""Tests for deterministic eligibility checks and rule registry lookups (Annex C)."""
 
 import sqlite3
 import pytest
@@ -24,7 +24,7 @@ def test_attendance_eligibility_with_rule(test_db_path):
     res = check_attendance_eligibility(student_id="S1001", db_path=test_db_path)
     assert res["is_eligible"] is True
     assert res["rule_id"] == "ATT_MIN_01"
-    assert "academic_regulations_2024.pdf" in res["source_document"]
+    assert "academic_regulations_2024.pdf" in res["source_doc_id"]
 
 
 def test_missing_rule_reports_unavailable(tmp_path):
@@ -40,7 +40,6 @@ def test_missing_rule_reports_unavailable(tmp_path):
 def test_placement_eligibility_with_rules(test_db_path):
     """Verify placement eligibility checks CGPA and backlogs against rule registry."""
     res = check_placement_eligibility(student_id="S1001", db_path=test_db_path)
-    # S1001 has high CGPA and 0 backlogs
     assert res["is_eligible"] is True
     assert res["rule_id"] == "PLACE_CGPA_01"
-    assert "placement_policy_2024.pdf" in res["source_document"]
+    assert "placement_policy_2024.pdf" in res["source_doc_id"]

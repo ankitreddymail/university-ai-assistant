@@ -1,7 +1,6 @@
 """Pydantic v2 data models and request/response schemas.
 
-Defines simple, clear schemas for API endpoints and internal data handling
-aligned with Annex C and the hackathon specifications.
+Defines schemas aligned strictly with Annex C of the HCLTech hackathon specification.
 """
 
 from typing import List, Optional, Dict, Any
@@ -16,57 +15,62 @@ class HealthResponse(BaseModel):
 
 
 class StudentProfile(BaseModel):
-    """Schema representing a student's academic record (Annex C)."""
+    """Schema representing a student record (Annex C)."""
     student_id: str
     full_name: str
-    email: str
     programme: str
-    batch: str
+    batch_year: int
     current_semester: int
     cgpa: float = Field(..., ge=0.0, le=10.0, description="Cumulative GPA on 0.0-10.0 scale")
-    standing: str  # e.g., 'Active', 'Good Standing', 'On Probation'
+    active_backlogs: int = Field(default=0, ge=0)
+    email: Optional[str] = None
     holds: List[str] = Field(default_factory=list)
 
 
 class CourseRecord(BaseModel):
-    """Schema representing a university course."""
+    """Schema representing a university course (Annex C)."""
     course_code: str
     course_name: str
     programme: str
     semester: int
     credits: int
-    instructor: str
 
 
 class AttendanceRecord(BaseModel):
-    """Schema representing student attendance in a course."""
+    """Schema representing course attendance (Annex C)."""
     student_id: str
     course_code: str
+    classes_held: int
     classes_attended: int
-    total_classes: int
-    attendance_percentage: float = Field(..., ge=0.0, le=100.0)
+    attendance_percentage: Optional[float] = None
 
 
 class ResultRecord(BaseModel):
-    """Schema representing semester course results."""
+    """Schema representing semester exam result (Annex C)."""
     student_id: str
     course_code: str
-    semester: int
-    grade: str
-    grade_points: float = Field(..., ge=0.0, le=10.0)
-    credits: int
-    status: str  # 'Pass', 'Fail', 'Supplementary'
+    exam_session: str
+    exam_type: str
+    internal_marks: float
+    external_marks: float
+    total_marks: float
+    max_marks: float
+    result: str  # 'Pass', 'Fail'
 
 
 class RuleRegistryEntry(BaseModel):
-    """Schema for academic business rules sourced from policy documents."""
+    """Schema for academic business rules in rule_registry (Annex C)."""
     rule_id: str
-    rule_category: str  # e.g., 'attendance', 'exam_result', 'supplementary_exam', 'placement'
     description: str
-    parameter_name: str
-    parameter_value: str
-    source_document: str
-    clause: str
+    parameter: str
+    operator: str
+    value: str
+    scope_programmes: str
+    scope_batches: str
+    effective_from: str
+    effective_to: str
+    source_doc_id: str
+    source_section: str
 
 
 class QueryRequest(BaseModel):
@@ -98,5 +102,5 @@ class EligibilityCheckResponse(BaseModel):
     is_eligible: bool
     reasons: List[str] = Field(default_factory=list)
     rule_id: Optional[str] = None
-    source_document: Optional[str] = None
-    clause: Optional[str] = None
+    source_doc_id: Optional[str] = None
+    source_section: Optional[str] = None

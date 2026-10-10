@@ -1,6 +1,6 @@
-rule_id,rule_category,description,parameter_name,parameter_value,source_document,clause
-ATT_MIN_01,attendance,Minimum course attendance required to sit for end-semester exams,min_attendance_percentage,75.0,academic_regulations_2024.pdf,Clause 4.1
-EXAM_PASS_01,exam_result,Course clearance requires grade points greater than or equal to 4.0,min_grade_points,4.0,academic_regulations_2024.pdf,Clause 6.2
-SUPP_EXAM_01,supplementary_exam,Maximum number of backlogs allowed to sit for supplementary exams,max_backlogs_allowed,3,academic_regulations_2024.pdf,Clause 7.4
-PLACE_CGPA_01,placement,Minimum CGPA required to participate in campus placement recruitment,min_cgpa,6.5,placement_policy_2024.pdf,Clause 3.1
-PLACE_BACKLOG_01,placement,Maximum active backlogs permitted for placement participation,max_active_backlogs,0,placement_policy_2024.pdf,Clause 3.2
+rule_id,description,parameter,operator,value,scope_programmes,scope_batches,effective_from,effective_to,source_doc_id,source_section
+ATT_MIN_01,Minimum course attendance percentage required to sit for end-semester exams,min_attendance_percentage,>=,75.0,ALL,ALL,2023-01-01,2099-12-31,academic_regulations_2024.pdf,Clause 4.1
+EXAM_PASS_01,Minimum total marks required to pass a registered course,min_total_marks,>=,40.0,ALL,ALL,2023-01-01,2099-12-31,academic_regulations_2024.pdf,Clause 6.2
+SUPP_EXAM_01,Maximum active backlogs allowed to sit for supplementary exams,max_backlogs_allowed,<=,3,ALL,ALL,2023-01-01,2099-12-31,academic_regulations_2024.pdf,Clause 7.4
+PLACE_CGPA_01,Minimum CGPA required to participate in campus placement recruitment,min_cgpa,>=,6.5,ALL,ALL,2023-01-01,2099-12-31,placement_policy_2024.pdf,Clause 3.1
+PLACE_BACKLOG_01,Maximum active backlogs permitted for placement participation,max_active_backlogs,==,0,ALL,ALL,2023-01-01,2099-12-31,placement_policy_2024.pdf,Clause 3.2
