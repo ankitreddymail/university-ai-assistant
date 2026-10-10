@@ -1,0 +1,56 @@
+[
+  {
+    "student_id": "S1001",
+    "full_name": "Aarav Sharma",
+    "email": "aarav.sharma@campus.edu",
+    "major": "Computer Science",
+    "gpa": 3.85,
+    "credits_completed": 124,
+    "standing": "Senior",
+    "holds": []
+  },
+  {
+    "student_id": "S1002",
+    "full_name": "Emily Chen",
+    "email": "emily.chen@campus.edu",
+    "major": "Mechanical Engineering",
+    "gpa": 3.1,
+    "credits_completed": 95,
+    "standing": "Junior",
+    "holds": [
+      "library_fee"
+    ]
+  },
+  {
+    "student_id": "S1003",
+    "full_name": "Marcus Johnson",
+    "email": "marcus.j@campus.edu",
+    "major": "Business Administration",
+    "gpa": 1.95,
+    "credits_completed": 122,
+    "standing": "Senior",
+    "holds": []
+  },
+  {
+    "student_id": "S1004",
+    "full_name": "Priya Patel",
+    "email": "priya.p@campus.edu",
+    "major": "Data Science",
+    "gpa": 3.92,
+    "credits_completed": 60,
+    "standing": "Sophomore",
+    "holds": []
+  },
+  {
+    "student_id": "S1005",
+    "full_name": "David Kim",
+    "email": "david.kim@campus.edu",
+    "major": "Economics",
+    "gpa": 2.8,
+    "credits_completed": 118,
+    "standing": "Senior",
+    "holds": [
+      "financial_aid_documents"
+    ]
+  }
+]

@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  # Backend REST API Service
+  api:
+    build: .
+    container_name: university_assistant_api
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    environment:
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      - MODEL_NAME=qwen2.5:7b
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+      - SQLITE_DB_PATH=data/students/university.db
+      - CHROMA_PERSIST_DIR=data/chroma
+      - DOCUMENTS_DIR=data/documents
+    volumes:
+      - ./data:/app/data
+
+  # Frontend Streamlit Dashboard
+  ui:
+    build: .
+    container_name: university_assistant_ui
+    command: streamlit run app/ui.py --server.port 8501 --server.address 0.0.0.0
+    ports:
+      - "8501:8501"
+    environment:
+      - BACKEND_URL=http://api:8000
+    depends_on:
+      - api
+    volumes:
+      - ./data:/app/data

@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+
+# Data and ChromaDB
+data/chroma/
+*.db
+*.sqlite3
+
+# Environment & Secrets
+.env
+
+# Testing & Reports
+.pytest_cache/
+reports/*.html
+reports/*.json
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
